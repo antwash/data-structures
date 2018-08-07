@@ -62,12 +62,3 @@ class SingleyLinkedList:
         while curr and curr.data != data:
             curr = curr.next
         return curr
-
-
-if __name__ == "__main__":
-    values = list(range(0,10))
-    linkedList = SingleyLinkedList(values)
-    print("LinkedList: ", str(linkedList))
-    print("Head: ", str(linkedList.getFirst()))
-    print("Tail: ", str(linkedList.getLast()))
-    print("Length of List: ", len(linkedList))
