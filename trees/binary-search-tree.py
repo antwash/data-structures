@@ -1,12 +1,4 @@
-class Node:
-    def __init__(self, data):
-        self.data = data
-        self.left = None
-        self.right = None
-        self.parent = None
-
-    def __repr__(self):
-        return str(self.data)
+from node import Node
 
 class BST:
     def __init__(self):
@@ -91,7 +83,9 @@ class BST:
         return current
 
     """
-    A new key is always inserted at leaf. We start searching a key from root till we hit a leaf node. Once a leaf node is found, the new node is added as a child of the leaf node.
+    A new key is always inserted at leaf. We start searching a key from root
+    till we hit a leaf node. Once a leaf node is found, the new node is added
+    as a child of the leaf node.
     """
     def insert(self, data):
         parent = None
