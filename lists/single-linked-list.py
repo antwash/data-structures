@@ -6,7 +6,8 @@ class Node:
     def __repr__(self):
         return str(self.data)
 
-class SingleyLinkedList:
+
+class SinglyLinkedList:
     def __init__(self, items=None):
         self.size = 0
         self.head = None
@@ -23,10 +24,10 @@ class SingleyLinkedList:
             curr = curr.next
         return "~> ".join(nodes)
     
-    def getFirst(self):
+    def get_first(self):
         return self.head
 
-    def getLast(self):
+    def get_last(self):
         current = self.head
         while current.next:
             current = current.next
@@ -52,7 +53,7 @@ class SingleyLinkedList:
         
         if found:
             self.size -= 1
-            if previous == None:
+            if previous is None:
                 self.head = self.head.next  # delete head 
             else:
                 previous.next = current.next

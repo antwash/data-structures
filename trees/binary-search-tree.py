@@ -1,5 +1,6 @@
 from node import Node
 
+
 class BST:
     def __init__(self):
         self.size = 0
@@ -9,76 +10,42 @@ class BST:
         return self.size
 
     def empty(self):
-        return self.root == None
+        return self.root is None
 
-    def min(self, treeNode):
-        while treeNode.left:
-            treeNode = treeNode.left
-        return treeNode
+    def search(self, node, data):
+        if not node or node.data == data:
+            return node
 
-    def max(self, treeNode):
-        while treeNode.right:
-            treeNode = treeNode.right
-        return treeNode
-
-    def search(self, treeNode, data):
-        if not treeNode or treeNode.data == data:
-            return treeNode
-
-        if treeNode.data > data:
-           return self.search(treeNode.left, data)
+        if node.data > data:
+            return self.search(node.left, data)
         else:
-            return self.search(treeNode.right, data)
+            return self.search(node.right, data)
 
-    def search_iterative(self, treeNode, data):
-        while treeNode and treeNode.data != data:
-            if treeNode.data > data:
-                treeNode = treeNode.left
-            else:
-                treeNode = treeNode.right
-        return treeNode
+    def in_order(self, node=None):
+        if node:
+            self.in_order(node.left)
+            print(node.data, end=" ")
+            self.in_order(node.right)
 
-    def inOrder(self, treeNode=None):
-        if treeNode:
-            self.inOrder(treeNode.left)
-            print(treeNode.data, end=" ")
-            self.inOrder(treeNode.right)
+    def pre_order(self, node=None):
+        if node:
+            print(node.data, end=" ")
+            self.pre_order(node.left)
+            self.pre_order(node.right)
 
-    def preOrder(self, treeNode=None):
-        if treeNode:
-            print(treeNode.data, end=" ")
-            self.preOrder(treeNode.left)
-            self.preOrder(treeNode.right)
+    def post_order(self, node=None):
+        if node:
+            self.post_order(node.left)
+            self.post_order(node.right)
+            print(node.data, end=" ")
 
-    def postOrder(self, treeNode=None):
-        if treeNode:
-            self.postOrder(treeNode.left)
-            self.postOrder(treeNode.right)
-            print(treeNode.data, end=" ")
+    def successor(self, node):
+        if node.right:
+            return self.min(node.right)
 
-    def bfs(self, treeNode):
-        if not treeNode:
-            return
-
-        queue, visited = [treeNode], set()
-        while queue:
-            level = []
-            for node in queue:
-                if node not in visited:
-                    visited.add(node)
-                if node.left != None:
-                    level.append(node.left)
-                if node.right != None:
-                    level.append(node.right)
-            queue = level
-
-    def successor(self, treeNode):
-        if treeNode.right:
-            return self.min(treeNode.right)
-
-        current = treeNode.parent
-        while current and current.right == treeNode:
-            treeNode = current
+        current = node.parent
+        while current and current.right == node:
+            node = current
             current = current.parent
         return current
 
@@ -89,23 +56,23 @@ class BST:
     """
     def insert(self, data):
         parent = None
-        newNode = Node(data)
+        new_node = Node(data)
         current = self.root
 
         while current:
             parent = current
-            if current.data > newNode.data:
+            if current.data > new_node.data:
                 current = current.left
             else:
                 current = current.right
 
-        newNode.parent = parent
-        if parent == None:
-            self.root = newNode    # tree empty
-        elif parent.data > newNode.data:
-            parent.left = newNode
+        new_node.parent = parent
+        if parent is None:
+            self.root = new_node    # tree empty
+        elif parent.data > new_node.data:
+            parent.left = new_node
         else:
-            parent.right = newNode
+            parent.right = new_node
 
     def delete(self, root, data):
         if not root:
@@ -121,14 +88,77 @@ class BST:
             Case 2: One Child
             Case 3: Two Children
             """
-            if root.left == None and root.right == None:
+            if root.left is None and root.right is None:
                 return None
-            elif root.left == None:
+            elif root.left is None:
                 return root.right
-            elif root.right == None:
+            elif root.right is None:
                 return root.left
             else:
                 mini = self.successor(root)
                 root.data = mini.data
                 root.right = self.delete(root.right, mini.data)
         return root
+
+    @staticmethod
+    def min(node):
+        while node.left:
+            node = node.left
+        return node
+
+    @staticmethod
+    def max(node):
+        while node.right:
+            node = node.right
+        return node
+
+    @staticmethod
+    def search_iterative(node, data):
+        while node and node.data != data:
+            if node.data > data:
+                node = node.left
+            else:
+                node = node.right
+        return node
+
+    @staticmethod
+    def in_order_iterative(node):
+        current, stack = node, []
+
+        while current or stack:
+            while current:
+                stack.append(current)
+                current = current.left
+
+            current = stack.pop()
+            print(current.data, end=" ")
+            current = current.right
+
+    @staticmethod
+    def pre_order_iterative(node):
+        stack = [node]
+        while stack:
+            current = stack.pop()
+            print(current.data, end=" ")
+            if current.right:
+                stack.append(current.right)
+            if current.left:
+                stack.append(current.left)
+
+    @staticmethod
+    def post_order_iterative(node):
+        current, items = [node], []
+
+        while current:
+            node = current.pop()
+            items.append(node)
+
+            if node.left:
+                current.append(node.left)
+            if node.right:
+                current.append(node.right)
+
+        while items:
+            current = items.pop()
+            print(current.data, end=" ")
+

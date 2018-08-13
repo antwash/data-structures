@@ -10,19 +10,11 @@
         print("Heaped built from values: ~>", v)
 """ 
 
+
 class Heap:
     def __init__(self):
         self.values = []
         self.heapSize = 0
-
-    def parent(self, index):
-        return int((index - 1) / 2)
-
-    def leftChild(self, index):
-        return 2 * index + 1
-
-    def rightChild(self, index):
-        return 2 * index + 2
 
     def insert(self, value):
         index = self.heapSize
@@ -31,7 +23,7 @@ class Heap:
         else:
             self.values[index] = value
         self.heapSize += 1
-        self.heapifyUp(index)
+        self.heapify_up(index)
 
     def delete(self, value):
         v = self.values
@@ -40,25 +32,25 @@ class Heap:
             last = self.heapSize - 1
             v[index], v[last] = v[last], None
             self.heapSize -= 1
-            self.heapifyDown(index)
+            self.heapify_down(index)
         else:
             print("Value doesn't exist in the heap.")
 
-    def heapifyUp(self, index):
+    def heapify_up(self, index):
         parent = self.parent(index)
         if parent >= 0:
             v = self.values 
             if v[parent] < v[index]:
                 v[parent], v[index] = v[index], v[parent]
-                self.heapifyUp(parent)
+                self.heapify_up(parent)
 
-    def heapifyDown(self, index):
+    def heapify_down(self, index):
         v = self.values
         largest = index
         last = self.heapSize - 1
         
-        left = self.leftChild(index)
-        right = self.rightChild(index)
+        left = self.left_child(index)
+        right = self.right_child(index)
 
         if left <= last and v[left] > v[largest]:
             largest = left
@@ -67,4 +59,16 @@ class Heap:
 
         if largest != index:
             v[largest], v[index] = v[index], v[largest]
-            self.heapifyDown(largest)
+            self.heapify_down(largest)
+
+    @staticmethod
+    def parent(index):
+        return int((index - 1) / 2)
+
+    @staticmethod
+    def left_child(index):
+        return 2 * index + 1
+
+    @staticmethod
+    def right_child(index):
+        return 2 * index + 2
